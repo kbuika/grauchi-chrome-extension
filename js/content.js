@@ -1,8 +1,9 @@
 const params = new URLSearchParams(window.location.search);
 let videoID = params.get("v");
 
-var observer = new MutationObserver(function (mutations) {
-  mutations.forEach(function (mutation) {
+// This helps us with observing changes to the DOM
+var observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
     if (mutation.addedNodes.length) {
       if (mutation.type == "childList") {
         console.log(mutation.target.innerText);
