@@ -13,8 +13,6 @@ Simple, sort of. I know you must be wondering, "Who is renaming the titles?", go
 ### Bottlenecks
  - I cannot, or rather, I do not have the time to go through all of Grauchi's mixes and add comments under them. I need to design a new method for this. Probably allow anyone to add a unique identifier that I can look for and make their comment the title.... still thinking.
 
- - As of now, the script is only running when a "The Good Company" video is selected. I use the channel name parameter ```ab_channel``` to get the channel name, however, sometimes the url does not have the channel name parameter which means the script doesn't run. I need to redesign this and get the channel name from the HTML element on the page.
-
  - The main idea is to rename Grauchi's mixes so you don't have to click a video. This means, I need to design a script that will run on the main youtube page and not just when a video is clicked. I have not put much thought into this, I am hoping to get one of those ```eureka``` moments.
 
 
