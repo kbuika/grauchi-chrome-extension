@@ -2,12 +2,21 @@ console.log("hey youtube");
 
 const params = new URLSearchParams(window.location.search);
 let videoID = params.get("v");
+let userName;
+
+setTimeout(() => {
+  document.querySelector("ytd-popup-container").style['display'] = "none"; // hides the popup
+  document.getElementById("avatar-btn")?.click() // clicks the avatar to open the pop up, this way it will be added to the DOM without being visible
+  document.getElementById("avatar-btn")?.click()
+  userName = document.querySelector("#account-name")?.innerText
+  document.querySelector("ytd-popup-container").style['display'] = "block";
+},1000)
+
 
 // crude data stores
 const videoIDs = [];
 let previousChildNodes = 0; // keeps track of previous child nodes count
 
-// This helps us with observing changes to the DOM
 const InnerPageObserver = new MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
     if (mutation.addedNodes.length) {
@@ -25,7 +34,6 @@ const MainPageObserver = new MutationObserver((mutations) => {
       if (mutation.type == "childList") {
         if (targetNode.children.length !== previousChildNodes) {
           Array.from(targetNode.children).map(async (node) => {
-            console.log("I am hereeee");
             let list = node.querySelectorAll(
               '[aria-label*="The Good Company KE"]'
             );
@@ -40,11 +48,9 @@ const MainPageObserver = new MutationObserver((mutations) => {
                     : (videoID = videoIDArr[videoIDArr.length - 1]);
                 }
                 if (!videoIDs.includes(videoID)) {
-                  console.log("found a new video id");
-                  console.log(list, "node");
                   let title = await getNewTitleFromComment(videoID);
-                  console.log(list?.[1]?.innerText);
-                  list[1].innerText = title;
+                  let previousTitle = list[1].innerText
+                  if(title){list[1].innerText = title}else{list[1].innerText = `${previousTitle} (comment to change title)`}
                   videoIDs.push(videoID);
                 }
               }
@@ -55,30 +61,27 @@ const MainPageObserver = new MutationObserver((mutations) => {
       }
     }
   });
-  console.log(videoIDs);
 });
 
-checkMainNode = async () => {
+checkMainNode = async () => {  
   if (videoID) {
     // get the node that has the youtube video title
-    console.log("inner page code")
-    let targetNode = document.querySelector(
+    targetNode = document.querySelector(
       "h1.title.style-scope.ytd-video-primary-info-renderer"
     );
     if (!targetNode) {
-      window.setTimeout(checkMainNode, 500); // delay the execution so all content loads.
+      window.setTimeout(checkMainNode, 1000); // delay the execution so all content loads.
       return;
     }
     // get channel name from HTML elements
     const channelTitle = document
       .querySelector("yt-formatted-string.style-scope.ytd-channel-name")
-      .getElementsByTagName("a")[0].innerHTML;
+      .getElementsByTagName("a")?.[0]?.innerHTML;
     if (channelTitle === "The Good Company KE") {
       // fetch request to get video comments
       let title = await getNewTitleFromComment(videoID); // get the title from the comments (Takes the comment from Steve Kibuika and sets that as title)
-      console.log(title);
       // set the title to the new title
-      targetNode.innerText = title;
+      if(title){targetNode.innerText = title || "Add comment to change title"}
       let config = {
         childList: true,
         subtree: true,
@@ -86,8 +89,7 @@ checkMainNode = async () => {
       InnerPageObserver.observe(targetNode, config); // invokes the observer to observe changes in the DOM
     }
   } else {
-    console.log("main page code")
-    let targetNode = document.querySelector(
+    targetNode = document.querySelector(
       "div.style-scope.ytd-rich-grid-renderer#contents"
     );
     if (!targetNode) {
@@ -102,7 +104,9 @@ checkMainNode = async () => {
     MainPageObserver.observe(targetNode, config); // invokes the observer to observe changes in the DOM
   }
 };
-checkMainNode();
+
+setTimeout(checkMainNode, 0); // delay the execution so all content loads.
+// checkMainNode();
 
 const getNewTitleFromComment = async (url) => {
   let title;
@@ -118,16 +122,20 @@ const getNewTitleFromComment = async (url) => {
       const comments = await response.json();
       return comments.items;
     }
+    if(!userName){
+      document.querySelector("ytd-popup-container").style['display'] = "none"; // hides the popup
+      document.getElementById("avatar-btn")?.click() // clicks the avatar to open the pop up, this way it will be added to the DOM without being visible
+      document.getElementById("avatar-btn")?.click()
+      userName = document.querySelector("#account-name")?.innerText
+      document.querySelector("ytd-popup-container").style['display'] = "block";
+    }
     await getData().then((comments) => {
       const myComment = comments.filter((comment) => {
         return (
-          comment?.snippet?.topLevelComment?.snippet?.authorDisplayName ===
-          "Steve Kibuika"
+          comment?.snippet?.topLevelComment?.snippet?.authorDisplayName === userName
         );
       });
-      title =
-        myComment[0]?.snippet?.topLevelComment?.snippet?.textDisplay ||
-        "Add a comment to change the video title";
+      title = myComment[0]?.snippet?.topLevelComment?.snippet?.textDisplay || null;
       return title;
     });
   } catch (e) {
