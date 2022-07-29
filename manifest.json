@@ -5,8 +5,14 @@
   "description": "An extension that renames The Good Company KE's mixes according to the comments you add to the videos.",
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/*"],
+      "matches": ["https://www.youtube.com"],
       "js": ["js/content.js"],
+      "all_frames": true,
+      "run_at": "document_end"
+    },
+    {
+      "matches": ["https://www.youtube.com/watch*"],
+      "js": ["js/innerContent.js"],
       "all_frames": true,
       "run_at": "document_end"
     }

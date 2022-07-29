@@ -1,4 +1,14 @@
+console.log("hey youtube inner page");
+const urlParams = new URLSearchParams(window.location.search);
+let videoID = urlParams.get("v");
 
+let userName;
+
+  document.querySelector("ytd-popup-container").style['display'] = "none"; // hides the popup
+  document.getElementById("avatar-btn")?.click() // clicks the avatar to open the pop up, this way it will be added to the DOM without being visible
+  document.getElementById("avatar-btn")?.click()
+  userName = document.querySelector("#account-name")?.innerText
+  document.querySelector("ytd-popup-container").style['display'] = "block";
 
 // This helps us with observing changes to the DOM
 var observer = new MutationObserver((mutations) => {
@@ -29,7 +39,7 @@ const checkNode = async () => {
     let title = await getNewTitleFromComment(videoID); // get the title from the comments (Takes the comment from Steve Kibuika and sets that as title)
     console.log(title);
     // set the title to the new title
-    targetNode.innerText = title;
+    {title ? targetNode.innerText = title : targetNode.innerText = `${targetNode.innerText} (comment to change title)`}
     var config = {
       childList: true,
       subtree: true,
@@ -53,13 +63,21 @@ const getNewTitleFromComment = async (url) => {
       const comments = await response.json();
       return comments.items;
     }
+    if(!userName){
+      document.querySelector("ytd-popup-container").style['display'] = "none"; // hides the popup
+      document.getElementById("avatar-btn")?.click() // clicks the avatar to open the pop up, this way it will be added to the DOM without being visible
+      document.getElementById("avatar-btn")?.click()
+      userName = document.querySelector("#account-name")?.innerText
+      document.querySelector("ytd-popup-container").style['display'] = "block";
+    }
+    console.log(userName);
     await getData().then((comments) => {
       const myComment = comments.filter((comment) => {
         return (
-          comment?.snippet?.topLevelComment?.snippet?.authorDisplayName === "Steve Kibuika"
+          comment?.snippet?.topLevelComment?.snippet?.authorDisplayName === userName
         );
       });
-      title = myComment[0]?.snippet?.topLevelComment?.snippet?.textDisplay || "Comment below to change the title";
+      title = myComment[0]?.snippet?.topLevelComment?.snippet?.textDisplay || null;
       return title;
     });
   } catch (e) {
