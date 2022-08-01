@@ -81,7 +81,7 @@ const getNewTitleFromComment = async (url) => {
   try {
     async function getData() {
       const response = await fetch(
-        `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId=${url}&key=AIzaSyC3FiYTcFfGbKsqvzJ_0Obcp7shFZGo-xQ`
+        `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet,replies&videoId=${url}&key=YOUR_API_KEY`
       );
       if (!response.ok) {
         const message = `An error has occured: ${response.status}`;
