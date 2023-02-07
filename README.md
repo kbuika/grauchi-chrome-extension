@@ -17,7 +17,6 @@
 - [Installation](#installation)
   - [Procedures](#procedures)
 - [Screenshots](#screenshots)
-  - [NewTab](#newtab)
   - [Popup](#popup)
 - [Documents](#documents)
 
@@ -58,10 +57,6 @@ This boilerplate is made for creating chrome extensions using React and Typescri
 6. If you want to build in production, Just run `yarn build` or `npm run build`.
 
 ## Screenshots <a name="screenshots"></a>
-
-### New Tab <a name="newtab"></a>
-
-<img width="971" src="https://user-images.githubusercontent.com/53500778/162631646-cd40976b-b737-43d0-8e6a-6ac090a2e2d4.png">
 
 ### Popup <a name="popup"></a>
 
