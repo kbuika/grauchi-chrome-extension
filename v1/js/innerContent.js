@@ -8,12 +8,12 @@ console.log("hey youtube inner page", currentUser());
 let currentUserName;
 
 setTimeout(() => {
-  document.querySelector("ytd-popup-container").style['display'] = "none"; // hides the popup
-  document.getElementById("avatar-btn")?.click() // clicks the avatar to open the pop up, this way it will be added to the DOM without being visible
-  document.getElementById("avatar-btn")?.click()
-  currentUserName = document.querySelector("#account-name")?.innerText
-  document.querySelector("ytd-popup-container").style['display'] = "block";
-},1000)
+  document.querySelector("ytd-popup-container").style["display"] = "none"; // hides the popup
+  document.getElementById("avatar-btn")?.click(); // clicks the avatar to open the pop up, this way it will be added to the DOM without being visible
+  document.getElementById("avatar-btn")?.click();
+  currentUserName = document.querySelector("#account-name")?.innerText;
+  document.querySelector("ytd-popup-container").style["display"] = "block";
+}, 1000);
 console.log(currentUserName);
 
 // This helps us with observing changes to the DOM
@@ -74,20 +74,22 @@ const getNewVideoTitleFromComment = async (url) => {
       return comments.items;
     }
     // if (!currentUserName) {
-      document.querySelector("ytd-popup-container").style["display"] = "none"; // hides the popup
-      document.getElementById("avatar-btn")?.click(); // clicks the avatar to open the pop up, this way it will be added to the DOM without being visible
-      document.getElementById("avatar-btn")?.click();
-      currentUserName = document.querySelector("#account-name")?.innerText;
-      document.querySelector("ytd-popup-container").style["display"] = "block";
+    document.querySelector("ytd-popup-container").style["display"] = "none"; // hides the popup
+    document.getElementById("avatar-btn")?.click(); // clicks the avatar to open the pop up, this way it will be added to the DOM without being visible
+    document.getElementById("avatar-btn")?.click();
+    currentUserName = document.querySelector("#account-name")?.innerText;
+    document.querySelector("ytd-popup-container").style["display"] = "block";
     // }
     console.log(currentUserName);
     await getData().then((comments) => {
       const myComment = comments.filter((comment) => {
         return (
-          comment?.snippet?.topLevelComment?.snippet?.authorDisplayName === currentUser()
+          comment?.snippet?.topLevelComment?.snippet?.authorDisplayName ===
+          currentUser()
         );
       });
-      title = myComment[0]?.snippet?.topLevelComment?.snippet?.textDisplay || null;
+      title =
+        myComment[0]?.snippet?.topLevelComment?.snippet?.textDisplay || null;
       return title;
     });
   } catch (e) {
@@ -96,11 +98,10 @@ const getNewVideoTitleFromComment = async (url) => {
   return title;
 };
 
-
 function useState(initialState) {
   let _val = initialState;
   const state = () => _val;
-  const setState = newVal => {
+  const setState = (newVal) => {
     _val = newVal;
   };
   return [state, setState];

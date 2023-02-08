@@ -1,0 +1,44 @@
+.App {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  padding: 10px;
+  background-color: #aabee6;
+  color: white;
+  height: auto;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.App div {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1em;
+  width: 80%;
+}
+
+.App div input {
+  height: 2.5em;
+  width: 100%;
+  padding-left: .5em;
+  border: none;
+  border-radius: 8px;
+}
+
+.App div button {
+  height: 2.5em;
+  width: 7em;
+  border: none;
+  border-radius: 8px;
+  background-color: #0c224e;
+  color: white;
+  margin-top: 1em;
+  cursor: pointer;
+}
