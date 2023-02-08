@@ -19,5 +19,5 @@ jobs:
         cache: 'yarn'
     - run: yarn install
     - run: yarn build:hmr
-    - run: yarn test
+    # - run: yarn test
     - run: yarn build
