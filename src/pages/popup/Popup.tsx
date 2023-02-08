@@ -5,7 +5,6 @@ const Popup = () => {
   const [currentUrl, setCurrentUrl] = useState<string | undefined>("");
   const [title, setTitle] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>("");
-  const [isYoutube, setIsYoutube] = useState<boolean>(true);
   useEffect(() => {
     const queryInfo = { active: true, lastFocusedWindow: true };
 
@@ -13,11 +12,6 @@ const Popup = () => {
       chrome.tabs.query(queryInfo, (tabs) => {
         const url = tabs[0].url;
         console.log("current url", url);
-        // console.log(new URL(currentUrl).hostname);
-        // if (new URL(currentUrl).hostname !== "www.youtube.com") {
-        //   setIsYoutube(false);
-        //   return;
-        // }
         setCurrentUrl(url);
       });
   }, []);
@@ -64,7 +58,7 @@ const Popup = () => {
   };
 
   // save reminder to IndexedDB
-  const saveReminder = () => {
+  const saveReminder = async () => {
     setError("");
     const id = Math.floor(Math.random() * 10000000) + 1000;
     if (!title) {
@@ -79,20 +73,27 @@ const Popup = () => {
     });
 
     // send notification
-    chrome.notifications.create(`${id}`, {
-      type: "basic",
-      iconUrl: "icon128.png",
-      title: "BookMark Reminder",
-      message: `New video title saved successfully`,
-      priority: 2,
-      requireInteraction: true,
-    });
-    // window.close(); // close the popup
+    await createNotification(id);
+    window.close(); // close the popup
 
     // create an alarm
     // chrome.runtime.sendMessage({ time: "1" }, (res) => {
     //   console.log(res);
     // });
+  };
+
+  const createNotification = async (id: number) => {
+    const response = await fetch(
+      "https://raw.githubusercontent.com/kibuikaCodes/grauchi-chrome-extension/main/icon128.png"
+    );
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    chrome.notifications.create(`${id}`, {
+      type: "basic",
+      iconUrl: url,
+      title: "Grauchi Chrome Extension",
+      message: `Woohoo! New video title saved successfully`,
+    });
   };
 
   if (currentUrl && !currentUrl.includes("youtube.com")) {

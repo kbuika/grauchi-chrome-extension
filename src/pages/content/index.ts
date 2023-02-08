@@ -47,7 +47,7 @@ const checkNode = () => {
   console.log(channelTitle);
   //   if (channelTitle === "The Good Company KE") {
   // fetch request to get video comments
-  const title = "Test test"; // get the title from the comments (Takes the comment from Steve Kibuika and sets that as title)
+  const title = "[ Test test ] "; // get the title from the comments (Takes the comment from Steve Kibuika and sets that as title)
   console.log(title);
   // set the title to the new title
   {
